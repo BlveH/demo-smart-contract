@@ -1,10 +1,10 @@
 import "@stdlib/deploy";
 
-message Add {
+message CounterValue {
     amount: Int as uint32;
 }
 
-contract HelloWorld with Deployable {
+contract Counter with Deployable {
     id: Int as uint32;
     counter: Int as uint32;
 
@@ -12,13 +12,17 @@ contract HelloWorld with Deployable {
         self.id = id;
         self.counter = 0;
     }
-
+    
+    //step 4
     receive("increment"){
         self.counter = self.counter + 1;
+        self.reply(CounterValue{amount:self.counter}.toCell());
+
     }
 
-    receive(msg:Add){
-        self.counter = self.counter +msg.amount;
+    //step 2 
+    receive("query"){
+        self.reply(CounterValue{amount:self.counter}.toCell());
     }
 
     get fun counter():Int{

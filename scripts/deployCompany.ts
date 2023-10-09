@@ -1,11 +1,11 @@
 import { toNano } from 'ton-core';
-import { HelloWorld } from '../wrappers/HelloWorld';
+import { Company } from '../wrappers/Company';
 import { NetworkProvider } from '@ton-community/blueprint';
 
 export async function run(provider: NetworkProvider) {
-    const helloWorld = provider.open(await HelloWorld.fromInit(54324n));
+    const company = provider.open(await Company.fromInit());
 
-    await helloWorld.send(
+    await company.send(
         provider.sender(),
         {
             value: toNano('0.05'),
@@ -16,7 +16,7 @@ export async function run(provider: NetworkProvider) {
         }
     );
 
-    await provider.waitForDeploy(helloWorld.address);
+    await provider.waitForDeploy(company.address);
 
-    // run methods on `helloWorld`
+    // run methods on `company`
 }
